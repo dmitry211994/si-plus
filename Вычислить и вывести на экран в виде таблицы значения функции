@@ -1,0 +1,67 @@
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+
+int main()
+{
+    setlocale(LC_ALL, "");
+
+    double xn, xk, dx;
+    double a, b, c;
+
+    std::cout << "x нач: ";
+    std::cin >> xn;
+
+    std::cout << "x кон: ";
+    std::cin >> xk;
+
+    std::cout << "шаг: ";
+    std::cin >> dx;
+
+    std::cout << "a: ";
+    std::cin >> a;
+
+    std::cout << "b: ";
+    std::cin >> b;
+
+    std::cout << "c: ";
+    std::cin >> c;
+
+    std::cout << "\n";
+    std::cout << "-------------------------\n";
+    std::cout << "|   x   |   F   |\n";
+    std::cout << "-------------------------\n";
+    while (xn <= xk)
+    {
+        double F;
+
+        if (xn == 0 && b != 0)
+        {
+            F = a * pow((xn + c), 2) - b;
+        }
+        else if (xn == 0 && b == 0)
+        {
+            if (c == 0)
+            {
+                std::cout << "x " << std::fixed << std::setprecision(2) << xn << " функция не определена потому что c = 0 \n";
+                xn += dx;
+                continue;
+            }
+            F = (a - xn) / c;
+        }
+        else
+        {
+            if (c == 0)
+            {
+                std::cout << "x " << std::fixed << std::setprecision(2) << xn << " функция не определена потому что c = 0 \n";
+                xn += dx;
+                continue;
+            }
+            F = a + xn / c;
+        }
+
+        std::cout << "| " << std::fixed << std::setprecision(2) << xn << " | " << std::fixed << std::setprecision(2) << F << " |\n";
+        xn += dx;
+    }
+    std::cout << "-------------------------\n";
+    return 0;}
