@@ -1,0 +1,99 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <fstream>
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    int row = 3; int col = 4;
+    int li[row][col] =
+    {
+        {5, 4, 7, 3},
+        {5, 8, 8, 8},
+        {0, 0, 0, 0}
+    };
+    int la[row][col]; //Упорядоченная матрица
+    //Массив соотносящий количество повторяющихся элементов и номер строки [индекс]
+    int index_repeat[row];
+    int order[row]; //Массив содержащий правильный порядок следования строк матрицы
+
+    // Вывод массива на экран
+    std::cout << "Масив li" << std::endl;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+            std::cout << li[i][j] << " ";
+        std::cout << std::endl;
+    }
+
+    //Упорядочить строки целочисленной прямоугольной матрицы по возрастанию количества одинаковых элементов в каждой строке
+
+    for(int i = 0; i < row; i++)
+    {
+        //Словарь в котором ключ это элемент а значение это сколько раз он повторяется в строке
+        std::map<int, int> same_numbers;
+        for(int o = 0; o < col; o++)
+            same_numbers[li[i][o]]++;
+        //Поиск максимального числа повторений в текущей строке
+        int biggest_reapeat =0;
+        for (const auto &pair : same_numbers)
+        {
+            if(pair.second > biggest_reapeat)
+                biggest_reapeat = pair.second;
+        }
+        index_repeat[i] = biggest_reapeat;
+    }
+    //Заполнение массива order
+    for (int i = 0; i < row; i++)
+    {
+        int maxIndex = 0;
+        int maxRepeat = -1;
+        for (int j = 0; j < row; j++)
+        {
+            if (index_repeat[j] > maxRepeat)
+            {
+                maxRepeat = index_repeat[j];
+                maxIndex = j;
+            }
+        }
+        order[i] = maxIndex;
+        index_repeat[maxIndex] = -1; // Меняем значение, чтобы исключить повторное включение строки
+    }
+ //Запись строк li в la в нужном порядке
+    for (int p = 0; p < row; p++)
+    {
+        int row_index = order[p];
+        for(int b = 0; b < col; b++)
+            la[p][b] = li[row_index][b];
+    }
+    //Вывод матрицы la
+    std::cout << "упорядоченная матрица" << std::endl;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+            std::cout << la[i][j] << " ";
+        std::cout << std::endl;
+    }
+// Номер первого из столбцов, не содержащих ни одного отрицательного элемента
+    int colomn_no_negtive = -1; // Инициализируем индекс столбца для случая, если такого столбца нет
+    for (int j = 0; j < col; ++j) {
+        bool hasNegative = false; // Флаг указывающий есть ли отрицательные элементы в текущем столбце
+        for (int i = 0; i < row; ++i) {
+            if (li[i][j] < 0) {
+                hasNegative = true; // Если есть отрицательный элемент, устанавливаем флаг
+                break; // Прерываем цикл по столбцу, так как уже есть отрицательный элемент
+            }
+        }
+
+        if (!hasNegative) { // Если в столбце нет отрицательных элементов
+            colomn_no_negtive = j;
+            break;
+        }
+    }
+    std::cout << "Первый столбец не содержащий ни одного отрицательного элемента - " << colomn_no_negtive << std::endl;
+    return 0;}
