@@ -1,0 +1,221 @@
+#include <iostream>
+using namespace std;
+/*
+12 вариант
+Создать класс «Список группы», в котором список реализован как
+двусвязный. По каждому человеку в группе должна быть следующая
+информация:
+фамилия, имя, отчество, год рождения, пол.
+
+Методы класса должны позволять:
+создавать список,
+добавлять элемент в начало списка и
+после i-того элемента,
+выводить информацию об i-том члене группы,
+осуществлять поиск самого младшего члена группы.
+*/
+
+
+//Класс содержит данные
+class Data
+{
+    private:
+        string first_name; string second_name; string last_name; int birth_year; string sex;
+    public:
+        Data(string first_name, string second_name, string last_name, int birth_year, string sex);//конструктор
+        ~Data(){};//деструктор
+        void setData(string first_name, string second_name, string last_name, int birth_year, string sex);//метод для записи данных
+        string getFirstName();//методы для получения данных
+        string getSecondName();
+        string getLastName();
+        int getBirthYear();
+        string getSex();
+};
+
+//Класс реализует односвязный список
+class MyList
+{
+    private:
+        //структура описывает элемент списка
+        struct Element
+        {
+            Data *element_data;//данные это объект класса Data
+            Element *next;//указатель на следующий элемент
+            Element *prev;//указатель на предыдущий элемент
+        }*first;//сразу объявим указатель на начало списка.
+    public:
+        MyList(Data *data);//конструктор
+        ~MyList();//деструктор
+        void add_an_element_to_the_beginning_of_the_list(Data *data);//добавляем элемент в начало списка
+        void add_an_element_after_the_ith_element(Data *data, int i);//добавляем элемент после iного элемента
+        void show_list();//показываем содержимое всего списка
+        void show_ith_member(int i);//показываем информацию об iном члене группы
+        void the_youngest_member();//поиск самого младшего члена группы
+};
+
+//Реализация методов класса Data
+Data::Data(string first_name1, string second_name2, string last_name3, int birth_year4, string sex5)
+{
+    this->first_name=first_name1;
+    this->second_name=second_name2;
+    this->last_name=last_name3;
+    this->birth_year= birth_year4;
+    this->sex=sex5;
+}
+
+void Data::setData(string first_name1, string second_name2, string last_name3, int birth_year4, string sex5)
+{
+    this->first_name=first_name1;
+    this->second_name=second_name2;
+    this->last_name=last_name3;
+    this->birth_year=birth_year4;
+    this->sex=sex5;
+}
+string Data::getFirstName(){return first_name;}
+string Data::getSecondName(){return second_name;}
+string Data::getLastName(){return last_name;}
+int Data::getBirthYear(){return birth_year;}
+string Data::getSex(){return sex;}
+
+// реализация методов класса MyList
+MyList::MyList(Data *data) //конструктор
+{
+    Element *element=new Element;//создаем элемент
+/*в этой строке data это аргумент конструктора ?*/element->element_data=data;//присваиваем полю данных объект содержащий данные
+    element->next=0;//следующего элемента нет
+    element->prev=0;//предыдущего элемента нет
+    this->first=element;//присваиваем указателю на первый элемент списка адрес созданного элемента
+}
+
+MyList::~MyList() //деконструктор удаляет полностью список
+{
+    if(first!=0)//если список существует, то
+    {
+        Element *tmp=this->first;//во временный указатель получаем адрес первого элемента списка
+        while(this->first->next!=0)//до тех пор, пока первый элемент не станет единственным
+        {
+            delete (this->first->element_data);//освобождаем память которую занимал объект с данными
+            tmp=this->first;//временный указатель теперь содержит адрес элемента, который будем удалять
+            this->first=this->first->next;//первым элементом списка теперь является следующий элемент
+            delete(tmp);//удаляем бывший первый элемент
+        }
+        delete(first);//удаляем единственный оставшийся в списке элемент
+    }
+}
+
+//добавляем элемент в начало списка
+void MyList::add_an_element_to_the_beginning_of_the_list(Data *data)
+{
+    Element *tmp=new Element;
+    tmp->element_data=data;
+    tmp->next=this->first;
+    tmp->prev = 0;
+    this->first->prev=tmp;
+    this->first=tmp;
+}
+//добавляем элемент после iного элемента
+//элемент добавится так будто индэксация идёт с 0; то есть если указать 0 то новый элемент будет 1
+void MyList::add_an_element_after_the_ith_element(Data *data, int i)
+{
+    int count = 0;
+    Element *aaa = this->first;
+    while (count < i) // Доходим до i-1 элемента
+    {aaa = aaa->next; count++;}
+    Element *new_element =new Element; //создаём новый элемент
+    new_element->element_data=data;
+
+    new_element->prev = aaa;
+    new_element->next = aaa->next;
+    if (aaa->next != nullptr) // Проверка наличия следующего элемента
+        aaa->next->prev = new_element;
+    aaa->next = new_element;
+}
+//выводим содержимое списка на экран
+void MyList::show_list()
+{
+    Element *tmp;
+    tmp=this->first;
+    while(tmp->next!=0)
+    {
+        cout << tmp->element_data->getFirstName() << endl;
+        cout << tmp->element_data->getSecondName() << endl;
+        cout << tmp->element_data->getLastName() << endl;
+        cout << tmp->element_data->getBirthYear() << endl;
+        cout << tmp->element_data->getSex() << endl;
+        tmp=tmp->next;
+    }
+    cout << tmp->element_data->getFirstName() << endl;
+    cout << tmp->element_data->getSecondName() << endl;
+    cout << tmp->element_data->getLastName() << endl;
+    cout << tmp->element_data->getBirthYear() << endl;
+    cout << tmp->element_data->getSex() << endl;
+}
+
+//показываем информацию об iном члене группы
+//элемент добавится так будто индэксация идёт с 0; то есть если указать 0 то новый элемент будет 1
+void MyList::show_ith_member(int i)
+{
+    Element *tmp;
+    tmp=this->first;
+    int count = 0;
+    while(count<i) //доходим до iного элемента
+    {tmp=tmp->next; count++;}
+    cout << tmp->element_data->getFirstName() << endl;
+    cout << tmp->element_data->getSecondName() << endl;
+    cout << tmp->element_data->getLastName() << endl;
+    cout << tmp->element_data->getBirthYear() << endl;
+    cout << tmp->element_data->getSex() << endl;
+}
+
+//поиск самого младшего члена группы
+void MyList::the_youngest_member()
+{
+    Element *current=this->first;
+    Element *youngest_member =this->first;  //Предполагаем, что самым младшим является первый член
+    int greatest_year = first->element_data->getBirthYear();
+    current = current->next; // Переходим ко второму члену
+    while (current->next != nullptr)
+    {
+        if (current->element_data->getBirthYear() > greatest_year) // Если нашли младшего члена
+        {
+            greatest_year = current->element_data->getBirthYear();
+            youngest_member = current; // Обновляем информацию о самом младшем члене
+        }
+        current = current->next; // Переходим к следующему члену
+    }
+    cout << youngest_member->element_data->getFirstName() << endl;
+    cout << youngest_member->element_data->getSecondName() << endl;
+    cout << youngest_member->element_data->getLastName() << endl;
+    cout << youngest_member->element_data->getBirthYear() << endl;
+    cout << youngest_member->element_data->getSex() << endl;
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    //"дима", "кривов", "a", 2004, "m"
+    //"стеша", "агибалова", "мариновна", 2022, "ж"
+    //"филя", "кривов", "дмитриевич", 2014, "m"
+    //"владимир", "фатеев", "алексеевич", 1990, "м"
+    Data *tmp1=new Data("дима", "кривов", "a", 2004, "m");
+    Data *tmp2=new Data("стеша", "агибалова", "мариновна", 2022, "ж");
+    Data *tmp3=new Data("филя", "кривов", "дмитриевич", 2014, "m");
+    Data *tmp4=new Data("владимир", "фатеев", "алексеевич", 1990, "м");
+    //создаем список
+    MyList *list=new MyList(tmp1);
+    //добавляем элементы в список
+    list->add_an_element_to_the_beginning_of_the_list(tmp2);
+    list->add_an_element_to_the_beginning_of_the_list(tmp3);
+    //выводим список на экран
+    cout<<"список из 1, 2 и 3 элементов     add_an_element_to_the_beginning_of_the_list"<<endl;
+    list->show_list();
+    cout<<"список из 1, 2, 3 и 4 элементов      add_an_element_after_the_ith_element"<<endl;
+    list->add_an_element_after_the_ith_element(tmp4, 1);
+    list->show_list();
+    cout<<"\t show_ith_member"<<endl;
+    list->show_ith_member(0);
+    cout<<"\t the_youngest_member"<<endl;
+    list->the_youngest_member();
+    cout<<"КОНЕЦ"<<endl;
+    return 0;
+}
