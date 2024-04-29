@@ -1,0 +1,23 @@
+#include <iostream>
+#include <math.h>
+
+double z1 (double x){
+    double z1 = ( pow(x, 2) + 2*x - 3 + (x+1)*pow((pow(x,2)-9),0.5) )/( pow(x, 2) - 2*x - 3 + (x-1)*pow((pow(x,2)-9),0.5) );
+    return z1;
+}
+
+double z2 (double x){
+    double z2 = pow( (x+3)/(x-3) , 0.5);
+    return z2;
+}
+
+int main()
+{
+    std::cout<<"x ";
+    double x;
+    std::cin >> x;
+    std::cout<<"z1 \n";
+    std::cout<<z1(x);
+    std::cout<<"\nz2 \n";
+    std::cout<<z2(x);
+    return 0;}
