@@ -1,0 +1,54 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+
+int main()
+{
+    setlocale(LC_ALL, "");
+    int n = 8;
+    int li[n] = {3, -7, 200, -45, -100, -1, 25, 26};
+
+    // Вывод масива на экран
+    for(int i = 0; i < n; i++)
+        std::cout << li[i] << " ";
+    std::cout << "" << std::endl;
+
+    // Количество отрицательных элементов масива
+    int negative_numbers = 0;
+    for(int i = 0; i < n; i++)
+        if(li[i] < 0)
+            negative_numbers += 1;
+    std::cout << "Количество отрицательных элементов масива" << std::endl;
+    std::cout << negative_numbers << std::endl;
+
+    // Поиск индекса минимального по модулю элемента
+    int min_po_mod = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        if (std::abs(li[i]) < li[min_po_mod])
+        {
+            min_po_mod = i;
+            break;
+        }
+    }
+
+    // Cуммa модулей элементов массива, расположенных после минимального по модулю элемента
+    int smem = 0;
+    for (int i = min_po_mod + 1; i < n; ++i)
+        smem += std::abs(li[i]);
+
+    std::cout<< "Cуммa модулей элементов массива, расположенных после минимального по модулю элемента" << std::endl;
+    std::cout<< smem << std::endl;
+
+    // Заменить все отрицательные элементы массива их квадратами и упорядочить элементы массива по возрастанию.
+    for (int i = 0; i < n; ++i)
+        if (li[i] < 0)
+            li[i] = li[i] * li[i];
+    std::sort(li, li + n);
+
+    // Вывод масива на экран
+    for(int i = 0; i < n; i++)
+        std::cout << li[i] << " ";
+    std::cout << "" << std::endl;
+    return 0;}
