@@ -1,0 +1,58 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+#include <map>
+#include <vector>
+#include <fstream>
+
+std::vector<std::string> split_sentences(const std::string& text)
+{
+    std::vector<std::string> sentences;
+    std::string sentence;
+    for (char c : text)
+    {
+        sentence += c;
+        if (c == '.' || c == '?' || c == '!')
+        {
+            sentences.push_back(sentence);
+            sentence = "";
+        }
+    }
+    return sentences;
+}
+
+int main()
+{
+    setlocale(LC_ALL, "");
+// Написать программу, которая считывает текст из файла и выводит на экран сначала
+//вопросительные, а затем восклицательные предложения.
+    std::string file_path = "C:\\Work\\file_to_read.txt";
+    std::ifstream fin; // Поток чтения из файла
+    std::string str = ""; //Строка в которую пишется содержимое файла
+    fin.open(file_path);
+    std::vector<std::string> interrogative_sentences;
+    std::vector<std::string> exclamation_sentences;
+
+    while(!fin.eof()) //Пока не достигнут конец файла
+    {
+        getline(fin, str); //Чтение строки
+        std::vector<std::string> separated_sentences = split_sentences(str); //Разбиение строки на предложения
+        for (const std::string& sentence : separated_sentences)
+        {
+            if (!sentence.empty()) //Если предложение не пустая строка
+            {
+                if (sentence.back() == '?')
+                    interrogative_sentences.push_back(sentence);
+                else if (sentence.back() == '!')
+                    exclamation_sentences.push_back(sentence);
+            }
+        }
+    }
+    //Вывод вопросительных затем восклицательных предложений
+    for (const std::string& question : interrogative_sentences)
+        std::cout << question << std::endl;
+    for (const std::string& exclamation : exclamation_sentences)
+        std::cout << exclamation << std::endl;
+    fin.close();
+    return 0;}
