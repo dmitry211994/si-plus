@@ -1,0 +1,120 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <array>
+#include <list>
+#define ALL if
+
+//изучить контэйнер list, написать програму демонстрирующую работу его методов
+
+using namespace std;
+int main()
+{setlocale(LC_ALL, "");
+    ALL (1==1){cout << "All" << endl;}
+
+    list<string> stringlist = {"один", "два", "три", "четыре"};
+
+    cout << "front " <<stringlist.front() << endl;
+    cout << "back " <<stringlist.back() << endl;
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "\n stringlist.size ";
+    cout << stringlist.size() << endl;
+    cout << "" << endl;
+
+    cout<< "stringlist.empty() " << stringlist.empty() << endl;
+    list<string> emptylist;
+    cout<< "emptylist.empty() " << emptylist.empty() << endl;
+    cout << "" << endl;
+
+    stringlist.resize(6, "новыйэлемент");
+    cout << "stringlist.resize(6, новыйэлемент);" << endl;
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    stringlist.resize(2);
+    cout << "stringlist.resize(2);" << endl;
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    stringlist.assign({"десять", "одиннадцать", "двенадцать", "тринадцать"});
+    cout << "stringlist.assign({10, 11, 12, 13});  " << endl;
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "stringlist.assign(10, 10 штук сонов);" << endl;
+    stringlist.assign(10, "10 штук сонов");
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "" << endl;
+    cout << "" << endl;
+
+    std::list<short> list1{ 20, 23, 26, 29};
+    std::list<short> list2{-2, -4, -6, -8};
+    list1.swap(list2);
+
+    cout << "swap list1" <<endl;
+    for (short n : list1)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "swap list2" <<endl;
+    for (short n : list2)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "pushback(30) pushfront(19)" <<endl;
+    list1.push_back(30); list1.push_front(19);
+    for (short n : list1)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "emplaceback(35) pushfront(15)" <<endl;
+    list1.emplace_back(35); list1.emplace_front(15);
+    for (short n : list1)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "" << endl;cout << "" << endl;
+    stringlist = {"солнечно", "облачно", "дождливо", "пасмурно", "снежно", "гололёд"};
+
+    auto iter { stringlist.begin() };
+    advance(iter, 2);
+    stringlist.insert(iter, "insert 2");
+    for(auto start{stringlist.begin()}; start !=stringlist.end(); start++ )
+    {std::cout << *start << std::endl;}
+    /*
+    stringlist.insert(4, 3, "insert 4,3");
+    for (string n : list1)
+        cout << n << "  ";
+    cout << "" << endl;
+    string list_of_values[] = {"value1", "value2", "value3"};
+    stringlist.insert(5, list_of_values)
+    */
+
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "stringlist.pop_back(), stringlist.pop_front()" <<endl;
+    stringlist.pop_back(); stringlist.pop_front();
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "" << endl;
+
+    cout << "stringlist.clear()" <<endl;
+    stringlist.clear();
+    for (string n : stringlist)
+        cout << n << "  ";
+    cout << "нету" << endl;
+
+    return 0;}
