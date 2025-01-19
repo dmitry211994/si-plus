@@ -1,0 +1,63 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+#include <map>
+#include <vector>
+#include <fstream>
+
+#include <array>
+
+//изучить контэйнер array, написать програму демонстрирующую работу его методов
+
+using namespace std;
+int main()
+{setlocale(LC_ALL, "");
+
+    // объявление
+    array<string, 3> strings {"un", "deux", "trois"};
+
+    //access to array cells
+    string two = strings[1];
+    cout<< "переменная two ";
+    cout<< two << endl;
+    strings[1] = "два";
+    cout<< "изменённое значение ";
+    cout<< strings[1] <<endl;
+
+    //длина
+    short strings_length = strings.size();
+
+    // перебор
+    cout<< "at 1: ";
+    cout<< strings.at(1) <<endl;
+    cout<< "front: ";
+    cout<< strings.front() <<endl;
+    cout<< "back: ";
+    cout<< strings.back() <<endl;
+
+    cout<< "перебор" <<endl;
+    for(int i = 0; i < strings_length; i++)
+    {
+        cout << strings[i] << endl;
+    }
+    cout<< ""<<endl;
+    cout<< "fill" <<endl;
+    strings.fill("y");
+    for(int i =0 ; i < strings_length; i++)
+    {
+        cout << strings[i] << endl;
+    }
+
+    //сравнение масивов
+
+    array<int, 6> numbers1 { 1, 2, 3, 4, 5, 6 };
+    array<int, 6> numbers2 = numbers1;
+
+    cout << "сравнение масивов numbers1 и numbers2" << endl;
+    cout << (numbers1 == numbers2) << endl;
+    cout << (numbers1 != numbers2) << endl;
+    cout << (numbers1 > numbers2) << endl;
+    cout << (numbers1 < numbers2) << endl;
+
+    return 0;}
